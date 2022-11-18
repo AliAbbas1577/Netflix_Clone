@@ -25,5 +25,5 @@ display: none;
 }
 .row__title{
     color: #e6e6e6;
-    align-items: center;
+    text-align: center;
 }

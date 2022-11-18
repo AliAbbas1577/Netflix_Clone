@@ -23,14 +23,14 @@ const Nav = () => {
     <div className={`nav ${show && "nav__black"}`}>
         <img 
         className='nav__logo'
-        src='https://seeklogo.com/vector-logo/318950/netflix-n'
+        src='https://upload.wikimedia.org/wikipedia/commons/archive/0/08/20160220053054%21Netflix_2015_logo.svg'
         alt='netflixlogo'
         />
-         <img 
+         {/* <img 
         className='avatar'
         src='https://seeklogo.com/vector-logo/318950/netflix-n'
         alt='netflixavatar'
-        />
+        /> */}
     </div>
   )
 }

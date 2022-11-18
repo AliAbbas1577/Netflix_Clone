@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import './Row.css'
 import YouTube from 'react-youtube'
+import movieTrailer from 'movie-trailer'
+// import movieTrailer from 'movie-trailer'
 const base_url="http://image.tmdb.org/t/p/original/"
 const Row = ({title,fetchURL,isLargeRow}) => {
     //state is reset when component load...
     //short term memmory why to write variable in react...
     const [movies,setmovies]=useState([]);
-
+    const [trailerUrl, settrailerUrl] = useState("")
     //if [],run once when row load and dont run again
     useEffect(()=>{
         async function fetchData(){
@@ -24,6 +26,20 @@ const Row = ({title,fetchURL,isLargeRow}) => {
             autoplay:1
         }
     }
+    const handleClick=(movie)=>{
+        if(trailerUrl){
+            settrailerUrl('')
+        }
+        else
+        {
+            movieTrailer(movie?.title || "")
+            .then((url)=>{
+                console.log(url)
+                const urlParams=new URLSearchParams(new URL(url).search);
+                settrailerUrl(urlParams.get('v'))
+            }).catch((error)=>console.log("error"+error))
+        }
+    }
   return (
         <div className='row'>
             <h2 className='row__title'>{title}</h2>
@@ -32,10 +48,10 @@ const Row = ({title,fetchURL,isLargeRow}) => {
                 {/* <img src={`${base_url}${movies.backdrop_path}`} alt={movies[0].title}></img> */}
                  {movies.map(m=>{
 
-                    return <img key={m.id} className={`row__poster ${isLargeRow && "row__posterLarge"}`} src={`${base_url}${isLargeRow?m.poster_path :m.backdrop_path}`} alt="Trulli" ></img>
+                    return <img key={m.id} onClick={()=>handleClick(m)} className={`row__poster ${isLargeRow && "row__posterLarge"}`} src={`${base_url}${isLargeRow?m.poster_path :m.backdrop_path}`} alt="Trulli" ></img>
                 })} 
             </div>
-            <YouTube videoId='vCTt_PnWHPg' opts={opts} />
+            {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
         </div>
   )
 }
